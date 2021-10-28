@@ -11,12 +11,33 @@ int getMyIndex(std::string word, int ind)
     return index;
 }
 TreeNode::TreeNode() :
-    endOfWord(false) {}
+    endOfWord(false), nodename("no name") {}
+TreeNode::TreeNode(std::string name) :
+    endOfWord(false), nodename(name) {}
+// TreeNode::setnodename(std::st)
 WordTree::WordTree() :
-    mysize(0), root(new TreeNode()) {}
+    mysize(0), root(new TreeNode("root"))
+{
+}
+void WordTree::toString()
+{
+    for (long unsigned int i = 0; i < 26; i++)
+    {
+        auto treenode = root->children[i];
+        if (treenode == nullptr)
+        {
+            std::cout << "nullptr at " << i << std::endl;
+        }
+        else
+        {
+            std::cout << treenode->endOfWord << std::endl;
+        }
+        // std::cout << treenode->endOfWord << std::endl;
+    }
+}
 void WordTree::add(std::string word)
 {
-    std::cout << "adding the word " << word << std::endl;
+    std::cout << "adding the word at index: " << getMyIndex(word, 0) << " " + word << std::endl;
     auto currNode = root;
     for (long unsigned int i = 0; i < word.size(); i++)
     {
@@ -29,15 +50,19 @@ void WordTree::add(std::string word)
         // hello[0] = h = 7
         int index = getMyIndex(word, i);
         // If the value is not already there
-        std::cout << "currnode before: " << currNode << std::endl;
+        std::cout << "currnode before: " << currNode << " " + currNode->nodename << std::endl;
         auto child = currNode->children[index];
         if (child == nullptr)
         {
             child = std::shared_ptr<TreeNode>(new TreeNode());
-            std::cout << "child: " << child << std::endl;
+            std::cout << "child: " << child << " " + child->nodename << std::endl;
+            child->nodename = word[i];
+            std::cout << "child: " << child << " " + child->nodename << std::endl;
+            toString();
         }
+        toString();
         currNode = child;
-        std::cout << "currnode after: " << currNode << "\n"
+        std::cout << "currnode after: " << currNode << " " + child->nodename + "\n"
                   << std::endl;
         // if you are at the end of the word
         if (i == word.size() - 1)
@@ -46,13 +71,18 @@ void WordTree::add(std::string word)
         }
         std::cout << "Current node end of word? " << currNode->endOfWord << std::endl;
     }
+
     if (currNode->endOfWord == true)
     {
         mysize++;
     }
+    toString();
 }
 bool WordTree::find(std::string word)
 {
+    std::cout << "In find: " + root->nodename << root << std::endl;
+    toString();
+
     return findRecursive(word, root, 0);
 }
 
@@ -60,7 +90,7 @@ bool WordTree::findRecursive(std::string word, std::shared_ptr<TreeNode> currNod
 {
     auto index = getMyIndex(word, i);
     std::cout << "my index: " << index << std::endl;
-    std::cout << currNode->children[index] << std::endl;
+    std::cout << currNode->children[index] << " " + currNode->nodename << std::endl;
     currNode = currNode->children[index];
 
     if (currNode == nullptr)
