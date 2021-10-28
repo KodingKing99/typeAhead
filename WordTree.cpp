@@ -30,7 +30,7 @@ void WordTree::toString()
         }
         else
         {
-            std::cout << treenode->endOfWord << std::endl;
+            std::cout << treenode->nodename << std::endl;
         }
         // std::cout << treenode->endOfWord << std::endl;
     }
@@ -58,12 +58,13 @@ void WordTree::add(std::string word)
             std::cout << "child: " << currNode->children[index] << " " + currNode->children[index]->nodename << std::endl;
             currNode->children[index]->nodename = word[i];
             std::cout << "child: " << currNode->children[index] << " " + currNode->children[index]->nodename << std::endl;
-            toString();
-            std::cout << "\nRoot at h: " << root->children[7] << std::endl;
+            // toString();
+            // std::cout << "\nRoot at h: " << root->children[7] << std::endl;
         }
-        toString();
-        currNode = currNode->children[index];
-        std::cout << "currnode after: " << currNode << " " + currNode->children[index]->nodename + "\n"
+        // toString();
+        std::cout << "\nRoot at h: " << root->children[7] << std::endl;
+        currNode = std::shared_ptr<TreeNode>->children[index];
+        std::cout << "currnode after: " << currNode << " " + currNode->nodename + "\n"
                   << std::endl;
         // if you are at the end of the word
         if (i == word.size() - 1)
@@ -93,7 +94,7 @@ bool WordTree::findRecursive(std::string word, std::shared_ptr<TreeNode> currNod
     std::cout << "my index: " << index << std::endl;
     std::cout << currNode->children[index] << " " + currNode->nodename << std::endl;
     currNode = currNode->children[index];
-
+    // std::cout << currNode << 
     if (currNode == nullptr)
     {
         std::cout << "NullPtr!!" << std::endl;
