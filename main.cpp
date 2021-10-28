@@ -9,6 +9,7 @@ int main()
     std::cout << "Tree size after adding: " << tree.size() << std::endl;
     // std::cout << "added node at index "
     std::cout << tree.root << tree.root->nodename << std::endl;
+    tree.add("help");
     // for (long unsigned int i = 0; i < 26; i++)
     // {
     //     auto treenode = tree.root->children[i];

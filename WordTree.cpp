@@ -20,11 +20,11 @@ WordTree::WordTree() :
     mysize(0), root(new TreeNode("root"))
 {
 }
-void WordTree::toString()
+void WordTree::toString(std::shared_ptr<TreeNode> node)
 {
     for (long unsigned int i = 0; i < 26; i++)
     {
-        auto treenode = root->children[i];
+        auto treenode = node->children[i];
         if (treenode == nullptr)
         {
             std::cout << "nullptr at " << i << std::endl;
@@ -80,13 +80,13 @@ void WordTree::add(std::string word)
     {
         mysize++;
     }
-    toString();
+    toString(root);
     // std::cout << "root at 7: " << root->children[7]->nodename << " next node: " << root->children[7]->children[4]->nodename << " next node: " << root->children[7]->children[4]->children[11]->nodename << std::endl;
 }
 bool WordTree::find(std::string word)
 {
     std::cout << "In find: " + root->nodename << root << std::endl;
-    toString();
+    toString(root);
 
     return findRecursive(word, root, 0);
 }
@@ -140,6 +140,9 @@ std::vector<std::string> WordTree::predict(std::string partial, std::uint8_t how
     std::vector<std::string> outputVec;
     std::queue<std::shared_ptr<TreeNode>> q;
     auto node = getMyNode(partial, root, 0);
+    std::cout << "Tree at hel: \n"
+              << std::endl;
+    toString(node);
     std::cout << "pushing: " << node->nodename << std::endl;
     q.push(node);
     std::string word = "" + partial;
