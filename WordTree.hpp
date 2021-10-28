@@ -19,4 +19,7 @@ class WordTree
     bool find(std::string word);
     std::vector<std::string> predict(std::string partial, std::uint8_t howMany);
     std::size_t size();
+
+  private:
+    bool findRecursive(std::string word, std::shared_ptr<TreeNode> currNode, int i);
 };
