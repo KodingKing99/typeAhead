@@ -62,7 +62,7 @@ void WordTree::add(std::string word)
             // std::cout << "\nRoot at h: " << root->children[7] << std::endl;
         }
         // toString();
-        std::cout << "\nRoot at h: " << root->children[7] << std::endl;
+        // std::cout << "\nRoot at h: " << root->children[7] << std::endl;
         // currNode = std::shared_ptr<TreeNode>(*(currNode->children[index]));
         currNode = currNode->children[index];
         std::cout << "currnode after: " << currNode << " " + currNode->nodename + "\n"
@@ -80,7 +80,7 @@ void WordTree::add(std::string word)
         mysize++;
     }
     toString();
-    std::cout << "root at 7: " << root->children[7]->nodename << " next node: " << root->children[7]->children[4]->nodename << " next node: " << root->children[7]->children[4]->children[11]->nodename << std::endl;
+    // std::cout << "root at 7: " << root->children[7]->nodename << " next node: " << root->children[7]->children[4]->nodename << " next node: " << root->children[7]->children[4]->children[11]->nodename << std::endl;
 }
 bool WordTree::find(std::string word)
 {

@@ -18,9 +18,9 @@ TEST(WordTree_Add, CanAddArbitraryValues)
     wordTree.add("hello");
 
     ASSERT_EQ(wordTree.size(), 3);
-    // ASSERT_EQ(wordTree.find("what"), true);
-    // ASSERT_EQ(wordTree.find("apple"), true);
-    // ASSERT_EQ(wordTree.find("hello"), true);
+    ASSERT_EQ(wordTree.find("what"), true);
+    ASSERT_EQ(wordTree.find("apple"), true);
+    ASSERT_EQ(wordTree.find("hello"), true);
 }
 
 TEST(WordTree_Add, DoesNotAddEmptyStrings)
