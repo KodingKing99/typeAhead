@@ -13,7 +13,7 @@ class WordTree
 {
   public:
     std::size_t mysize;
-    TreeNode* root;
+    std::shared_ptr<TreeNode> root;
     WordTree();
     void add(std::string word);
     bool find(std::string word);

@@ -4,7 +4,8 @@
 int main()
 {
     std::cout << "Hello World" << std::endl;
-    WordTree* tree = new WordTree();
-    tree->add("hello");
+    WordTree tree;
+    tree.add("heLLo");
+    std::cout << "Tree size after adding: " << tree.size() << std::endl;
     return 0;
 }
