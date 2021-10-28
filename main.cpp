@@ -23,6 +23,6 @@ int main()
     //     // std::cout << treenode->endOfWord << std::endl;
     // }
     auto wordFound = tree.find("hello");
-    // std::cout << "Found hello? " << wordFound << std::endl;
+    std::cout << "Found hello? " << wordFound << std::endl;
     return 0;
 }
