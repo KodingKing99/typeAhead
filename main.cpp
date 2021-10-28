@@ -24,5 +24,11 @@ int main()
     // }
     auto wordFound = tree.find("hello");
     std::cout << "Found hello? " << wordFound << std::endl;
+    auto outputVec = tree.predict("hel", 1);
+    std::cout << "Output vec after predict: " << std::endl;
+    for (auto i : outputVec)
+    {
+        std::cout << i << std::endl;
+    }
     return 0;
 }

@@ -2,6 +2,7 @@
 
 #include <cctype>
 #include <iostream>
+#include <queue>
 // #include <functional>
 const int ALPHAVAL = 97;
 int getMyIndex(std::string word, int ind)
@@ -108,8 +109,65 @@ bool WordTree::findRecursive(std::string word, std::shared_ptr<TreeNode> currNod
         std::cout << "Found word" << std::endl;
         return true;
     }
+    // go to the next index
     i += 1;
     return findRecursive(word, currNode, i);
+}
+/////////
+// Helper function for predict, gets the node corresponding to the partial word
+// returns root if not found
+/////////
+std::shared_ptr<TreeNode> WordTree::getMyNode(std::string partial, std::shared_ptr<TreeNode> currNode, int i)
+{
+    if (i == partial.size())
+    {
+        std::cout << "exiting... i: " << i << std::endl;
+        return currNode;
+    }
+    auto index = getMyIndex(partial, i);
+    currNode = currNode->children[index];
+    if (currNode == nullptr)
+    {
+        std::cout << "NullPtr in get my node!!" << std::endl;
+        return root;
+    }
+    i += 1;
+    return getMyNode(partial, currNode, i);
+}
+
+std::vector<std::string> WordTree::predict(std::string partial, std::uint8_t howMany)
+{
+    std::vector<std::string> outputVec;
+    std::queue<std::shared_ptr<TreeNode>> q;
+    auto node = getMyNode(partial, root, 0);
+    std::cout << "pushing: " << node->nodename << std::endl;
+    q.push(node);
+    std::string word = "" + partial;
+    std::cout << "word to find: " << partial << std::endl;
+    while (!q.empty() || outputVec.size() != howMany)
+    {
+        std::shared_ptr<TreeNode> v = q.front();
+        q.pop();
+        std::cout << "Popped: " << v->nodename << std::endl;
+        for (auto node : v->children)
+        {
+            if (node == nullptr)
+            {
+                continue;
+            }
+            else
+            {
+                word += node->nodename;
+                std::cout << word << std::endl;
+                if (node->endOfWord)
+                {
+                    outputVec.push_back(word);
+                }
+                q.push(node);
+            }
+        }
+    }
+    return outputVec;
 }
 std::size_t WordTree::size()
 {
