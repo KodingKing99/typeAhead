@@ -7,6 +7,7 @@
 const int ALPHAVAL = 97;
 int getMyIndex(std::string word, int ind)
 {
+
     int index = static_cast<int>(std::tolower(word[ind]));
     index -= ALPHAVAL;
     return index;
@@ -52,7 +53,7 @@ void WordTree::add(std::string word)
         int index = getMyIndex(word, i);
         // If the value is not already there
         std::cout << "currnode before: " << currNode << " " + currNode->nodename << std::endl;
-        // auto child = currNode->children[index];
+        auto child = currNode->children[index];
         if (currNode->children[index] == nullptr)
         {
             currNode->children[index] = std::shared_ptr<TreeNode>(new TreeNode());
@@ -65,6 +66,7 @@ void WordTree::add(std::string word)
         // toString();
         // std::cout << "\nRoot at h: " << root->children[7] << std::endl;
         // currNode = std::shared_ptr<TreeNode>(*(currNode->children[index]));
+        // if(currNode->children[index])
         currNode = currNode->children[index];
         std::cout << "currnode after: " << currNode << " " + currNode->nodename + "\n"
                   << std::endl;
@@ -74,26 +76,39 @@ void WordTree::add(std::string word)
             currNode->endOfWord = true;
         }
         std::cout << "Current node end of word? " << currNode->endOfWord << std::endl;
+        // if you are at the end of a word, and child was null (i.e. unique) then increment size
+        if (currNode->endOfWord == true && child == nullptr)
+        {
+            mysize++;
+        }
     }
 
-    if (currNode->endOfWord == true)
-    {
-        mysize++;
-    }
     toString(root);
     // std::cout << "root at 7: " << root->children[7]->nodename << " next node: " << root->children[7]->children[4]->nodename << " next node: " << root->children[7]->children[4]->children[11]->nodename << std::endl;
 }
 bool WordTree::find(std::string word)
 {
-    std::cout << "In find: " + root->nodename << root << std::endl;
+    std::cout << "In find: " << word << std::endl;
     toString(root);
-
+    if (word.size() == 0)
+    {
+        return false;
+    }
     return findRecursive(word, root, 0);
 }
 
 bool WordTree::findRecursive(std::string word, std::shared_ptr<TreeNode> currNode, int i)
 {
     std::cout << "i: " << i << std::endl;
+    if (i >= word.size() && currNode->endOfWord)
+    {
+        return true;
+    }
+    if (i < 0 || i >= word.size())
+    {
+        return false;
+    }
+
     auto index = getMyIndex(word, i);
     std::cout << "my index: " << index << std::endl;
     std::cout << currNode->children[index] << " " + currNode->nodename << std::endl;
@@ -104,11 +119,11 @@ bool WordTree::findRecursive(std::string word, std::shared_ptr<TreeNode> currNod
         std::cout << "NullPtr!!" << std::endl;
         return false;
     }
-    if (currNode->endOfWord == true)
-    {
-        std::cout << "Found word" << std::endl;
-        return true;
-    }
+    // if (currNode->endOfWord == true)
+    // {
+    //     std::cout << "Found word" << std::endl;
+    //     return true;
+    // }
     // go to the next index
     i += 1;
     return findRecursive(word, currNode, i);
@@ -117,7 +132,7 @@ bool WordTree::findRecursive(std::string word, std::shared_ptr<TreeNode> currNod
 // Helper function for predict, gets the node corresponding to the partial word
 // returns root if not found
 /////////
-std::shared_ptr<TreeNode> WordTree::getMyNode(std::string partial, std::shared_ptr<TreeNode> currNode, int i)
+std::shared_ptr<TreeNode> WordTree::getMyNode(std::string partial, std::shared_ptr<TreeNode> currNode, long unsigned int i)
 {
     if (i == partial.size())
     {
@@ -139,6 +154,10 @@ std::vector<std::string> WordTree::predict(std::string partial, std::uint8_t how
 {
     std::vector<std::string> outputVec;
     std::queue<std::pair<std::shared_ptr<TreeNode>, std::string>> q;
+    if (partial.size() == 0)
+    {
+        return outputVec;
+    }
     auto node = getMyNode(partial, root, 0);
     std::cout << "Tree at hel: \n"
               << std::endl;
@@ -147,6 +166,10 @@ std::vector<std::string> WordTree::predict(std::string partial, std::uint8_t how
     q.push(std::make_pair(node, partial));
     while (!q.empty())
     {
+        if (outputVec.size() == howMany)
+        {
+            break;
+        }
         std::pair<std::shared_ptr<TreeNode>, std::string> v = q.front();
         q.pop();
         std::cout << "Popped: " << v.first->nodename << std::endl;
@@ -159,8 +182,8 @@ std::vector<std::string> WordTree::predict(std::string partial, std::uint8_t how
             }
             else
             {
-                std::cout << "Tree at node: " << node->nodename << std::endl;
-                toString(node);
+                // std::cout << "Tree at node: " << node->nodename << std::endl;
+                // toString(node);
                 // word += node->nodename;
                 // std::cout << word << std::endl;
                 if (node->endOfWord)
@@ -168,11 +191,6 @@ std::vector<std::string> WordTree::predict(std::string partial, std::uint8_t how
                     std::cout << "end of word. " << v.second + node->nodename << std::endl;
                     outputVec.push_back(v.second + node->nodename);
                     std::cout << "queue size: " << q.size() << std::endl;
-                    if (outputVec.size() == howMany)
-                    {
-                        break;
-                    }
-                    continue;
                 }
                 std::cout << "continuing on to next iteration" << std::endl;
                 std::cout << v.second + node->nodename << std::endl;
@@ -182,6 +200,10 @@ std::vector<std::string> WordTree::predict(std::string partial, std::uint8_t how
         }
     }
     std::cout << "exitting predict..." << std::endl;
+    for (auto i : outputVec)
+    {
+        std::cout << i << std::endl;
+    }
     return outputVec;
 }
 std::size_t WordTree::size()

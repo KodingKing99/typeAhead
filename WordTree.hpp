@@ -26,5 +26,5 @@ class WordTree
 
   private:
     bool findRecursive(std::string word, std::shared_ptr<TreeNode> currNode, int i);
-    std::shared_ptr<TreeNode> getMyNode(std::string partial, std::shared_ptr<TreeNode> currNode, int i);
+    std::shared_ptr<TreeNode> getMyNode(std::string partial, std::shared_ptr<TreeNode> currNode, long unsigned int i);
 };
