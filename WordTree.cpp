@@ -107,7 +107,7 @@ std::shared_ptr<TreeNode> WordTree::getMyNode(std::string partial, std::shared_p
     currNode = currNode->children[index];
     if (currNode == nullptr)
     {
-        return root;
+        return nullptr;
     }
     i += 1;
     return getMyNode(partial, currNode, i);
@@ -122,10 +122,14 @@ std::vector<std::string> WordTree::predict(std::string partial, std::uint8_t how
         return outputVec;
     }
     auto node = getMyNode(partial, root, 0);
+    if (node == nullptr)
+    {
+        return outputVec;
+    }
     q.push(std::make_pair(node, partial));
     while (!q.empty())
     {
-        if (outputVec.size() == howMany)
+        if (outputVec.size() >= howMany)
         {
             break;
         }
@@ -147,11 +151,6 @@ std::vector<std::string> WordTree::predict(std::string partial, std::uint8_t how
                 q.push(std::make_pair(node, v.second + node->nodename));
             }
         }
-    }
-    std::cout << "exitting predict..." << std::endl;
-    for (auto i : outputVec)
-    {
-        std::cout << i << std::endl;
     }
     return outputVec;
 }
