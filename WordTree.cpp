@@ -138,38 +138,50 @@ std::shared_ptr<TreeNode> WordTree::getMyNode(std::string partial, std::shared_p
 std::vector<std::string> WordTree::predict(std::string partial, std::uint8_t howMany)
 {
     std::vector<std::string> outputVec;
-    std::queue<std::shared_ptr<TreeNode>> q;
+    std::queue<std::pair<std::shared_ptr<TreeNode>, std::string>> q;
     auto node = getMyNode(partial, root, 0);
     std::cout << "Tree at hel: \n"
               << std::endl;
     toString(node);
     std::cout << "pushing: " << node->nodename << std::endl;
-    q.push(node);
-    std::string word = "" + partial;
-    std::cout << "word to find: " << partial << std::endl;
-    while (!q.empty() || outputVec.size() != howMany)
+    q.push(std::make_pair(node, partial));
+    while (!q.empty())
     {
-        std::shared_ptr<TreeNode> v = q.front();
+        std::pair<std::shared_ptr<TreeNode>, std::string> v = q.front();
         q.pop();
-        std::cout << "Popped: " << v->nodename << std::endl;
-        for (auto node : v->children)
+        std::cout << "Popped: " << v.first->nodename << std::endl;
+        for (auto node : v.first->children)
         {
+
             if (node == nullptr)
             {
                 continue;
             }
             else
             {
-                word += node->nodename;
-                std::cout << word << std::endl;
+                std::cout << "Tree at node: " << node->nodename << std::endl;
+                toString(node);
+                // word += node->nodename;
+                // std::cout << word << std::endl;
                 if (node->endOfWord)
                 {
-                    outputVec.push_back(word);
+                    std::cout << "end of word. " << v.second + node->nodename << std::endl;
+                    outputVec.push_back(v.second + node->nodename);
+                    std::cout << "queue size: " << q.size() << std::endl;
+                    if (outputVec.size() == howMany)
+                    {
+                        break;
+                    }
+                    continue;
                 }
-                q.push(node);
+                std::cout << "continuing on to next iteration" << std::endl;
+                std::cout << v.second + node->nodename << std::endl;
+
+                q.push(std::make_pair(node, v.second + node->nodename));
             }
         }
     }
+    std::cout << "exitting predict..." << std::endl;
     return outputVec;
 }
 std::size_t WordTree::size()
