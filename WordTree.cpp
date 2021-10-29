@@ -5,6 +5,7 @@
 #include <queue>
 // #include <functional>
 const int ALPHAVAL = 97;
+// helper function to get index of alpha val
 int getMyIndex(std::string word, int ind)
 {
 
@@ -49,7 +50,6 @@ void WordTree::add(std::string word)
         // hello[0] = h = 7
         int index = getMyIndex(word, i);
         // If the value is not already there
-        // auto parent = currNode->children[index];
         if (currNode->children[index] == nullptr)
         {
             currNode->children[index] = std::shared_ptr<TreeNode>(new TreeNode());
@@ -63,6 +63,7 @@ void WordTree::add(std::string word)
         }
     }
 }
+// Helper function
 bool WordTree::find(std::string word)
 {
     if (word.size() == 0)
@@ -71,7 +72,7 @@ bool WordTree::find(std::string word)
     }
     return findRecursive(word, root, 0);
 }
-
+// recursive function
 bool WordTree::findRecursive(std::string word, std::shared_ptr<TreeNode> currNode, long unsigned int i)
 {
     if (i >= word.size() && currNode->endOfWord)

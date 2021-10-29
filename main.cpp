@@ -7,6 +7,9 @@
 #include <memory>
 #include <sstream>
 #include <string>
+///////////
+// @author Nick Sorenson
+//////////
 template <typename Out>
 void split(const std::string& s, char delim, Out result)
 {
@@ -28,12 +31,11 @@ std::shared_ptr<WordTree> readDictionary(std::string filename)
 {
     auto wordTree = std::make_shared<WordTree>();
     std::ifstream inFile = std::ifstream(filename, std::ios::in);
-
+    std::cout << "loading dictionary..." << std::endl;
     while (!inFile.eof())
     {
         std::string word;
         std::getline(inFile, word);
-        std::cout << "hi" << std::endl;
         // Need to consume the carriage return character for some systems, if it exists
         if (!word.empty() && word[word.size() - 1] == '\r')
         {
@@ -55,14 +57,12 @@ void showPredictions(std::pair<int, int> cursor, std::shared_ptr<WordTree> tree,
     // Number of rows
     auto HOWMANY = rlutil::trows() - 10;
     auto HOWMANY2 = rlutil::trows() - 2;
-    // auto HOWMANY = 3;
-    // std::cout << "Number of rows: " << HOWMANY << std::endl;
     rlutil::locate(1, 2);
+    // clear previous words
     for (int i = 0; i < HOWMANY2; i++)
     {
         std::cout << std::string(40, ' ') << std::endl;
     }
-    // auto clearCursor = std::make_pair<int, int> (1, 2);
 
     rlutil::locate(1, 2); // put it back
     if (partial.size() > 0)
@@ -76,16 +76,6 @@ void showPredictions(std::pair<int, int> cursor, std::shared_ptr<WordTree> tree,
     }
     rlutil::locate(cursor.first, cursor.second);
 }
-// void debug(std::string partial, std::pair<int, int> cursor)
-// {
-//     // move cursor down to debug area
-//     rlutil::locate(1, 15);
-//     // print stuff
-//     std::cout << "partial: " << partial << std::endl;
-//     std::cout << "cursor: " << std::get<0>(cursor) << ", " << std::get<1>(cursor) << std::endl;
-//     // move it back
-//     rlutil::locate(std::get<0>(cursor), std::get<1>(cursor));
-// }
 void doPredict()
 {
     int ENTERKEY = 10;
@@ -120,17 +110,6 @@ void doPredict()
 }
 int main()
 {
-    std::cout << "Hello World" << std::endl;
-    WordTree tree;
-    tree.add("hello");
-    std::cout << "Tree size after adding: " << tree.size() << std::endl;
-    // std::cout << "added node at index "
-    std::cout << tree.root << tree.root->nodename << std::endl;
-    tree.add("help");
-    auto wordFound = tree.find("hello");
-    std::cout << "Found hello? " << wordFound << std::endl;
-    auto outputVec = tree.predict("hel", 1);
-    std::cout << "reading from dict..." << std::endl;
     doPredict();
     return 0;
 }
