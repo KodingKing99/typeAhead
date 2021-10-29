@@ -136,20 +136,20 @@ std::vector<std::string> WordTree::predict(std::string partial, std::uint8_t how
         }
         std::pair<std::shared_ptr<TreeNode>, std::string> v = q.front();
         q.pop();
-        for (auto node : v.first->children)
+        for (auto child : v.first->children)
         {
 
-            if (node == nullptr)
+            if (child == nullptr)
             {
                 continue;
             }
             else
             {
-                if (node->endOfWord)
+                if (child->endOfWord)
                 {
-                    outputVec.push_back(v.second + node->nodename);
+                    outputVec.push_back(v.second + child->nodename);
                 }
-                q.push(std::make_pair(node, v.second + node->nodename));
+                q.push(std::make_pair(child, v.second + child->nodename));
             }
         }
     }

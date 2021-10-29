@@ -55,7 +55,7 @@ std::shared_ptr<WordTree> readDictionary(std::string filename)
 void showPredictions(std::pair<int, int> cursor, std::shared_ptr<WordTree> tree, std::string partial)
 {
     // Number of rows
-    auto HOWMANY = rlutil::trows() - 10;
+    int HOWMANY = rlutil::trows() - 10;
     auto HOWMANY2 = rlutil::trows() - 2;
     rlutil::locate(1, 2);
     // clear previous words
@@ -69,7 +69,7 @@ void showPredictions(std::pair<int, int> cursor, std::shared_ptr<WordTree> tree,
     {
         rlutil::locate(1, 3);
         std::cout << "--- prediction ---" << std::endl;
-        for (auto word : tree->predict(*split(partial, ' ').rbegin(), HOWMANY))
+        for (auto word : tree->predict(*split(partial, ' ').rbegin(), static_cast<std::uint8_t>(HOWMANY)))
         {
             std::cout << word << std::endl;
         }
