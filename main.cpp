@@ -52,18 +52,23 @@ std::shared_ptr<WordTree> readDictionary(std::string filename)
 }
 void showPredictions(std::pair<int, int> cursor, std::shared_ptr<WordTree> tree, std::string partial)
 {
-    // go to next line
-    // auto HOWMANY = rlutil::trows() - 1;
-    auto HOWMANY = 3;
+    // Number of rows
+    auto HOWMANY = rlutil::trows() - 10;
+    auto HOWMANY2 = rlutil::trows() - 2;
+    // auto HOWMANY = 3;
     // std::cout << "Number of rows: " << HOWMANY << std::endl;
     rlutil::locate(1, 2);
-    for (std::size_t i = 0; i < 20; i++)
+    for (int i = 0; i < HOWMANY2; i++)
     {
         std::cout << std::string(40, ' ') << std::endl;
     }
+    // auto clearCursor = std::make_pair<int, int> (1, 2);
+
     rlutil::locate(1, 2); // put it back
     if (partial.size() > 0)
     {
+        rlutil::locate(1, 3);
+        std::cout << "--- prediction ---" << std::endl;
         for (auto word : tree->predict(*split(partial, ' ').rbegin(), HOWMANY))
         {
             std::cout << word << std::endl;
@@ -71,20 +76,19 @@ void showPredictions(std::pair<int, int> cursor, std::shared_ptr<WordTree> tree,
     }
     rlutil::locate(cursor.first, cursor.second);
 }
-void debug(std::string partial, std::pair<int, int> cursor)
-{
-    // move cursor down to debug area
-    rlutil::locate(1, 15);
-    // print stuff
-    std::cout << "partial: " << partial << std::endl;
-    std::cout << "cursor: " << std::get<0>(cursor) << ", " << std::get<1>(cursor) << std::endl;
-    // move it back
-    rlutil::locate(std::get<0>(cursor), std::get<1>(cursor));
-}
+// void debug(std::string partial, std::pair<int, int> cursor)
+// {
+//     // move cursor down to debug area
+//     rlutil::locate(1, 15);
+//     // print stuff
+//     std::cout << "partial: " << partial << std::endl;
+//     std::cout << "cursor: " << std::get<0>(cursor) << ", " << std::get<1>(cursor) << std::endl;
+//     // move it back
+//     rlutil::locate(std::get<0>(cursor), std::get<1>(cursor));
+// }
 void doPredict()
 {
     int ENTERKEY = 10;
-    int count = 0;
     auto tree = readDictionary("../dictionary.txt");
     rlutil::cls();
     auto cursor = std::make_pair(1, 1);
@@ -111,7 +115,6 @@ void doPredict()
             // Move the cursor
             cursor.first += 1;
         }
-        debug(partial, cursor);
         showPredictions(cursor, tree, partial);
     }
 }

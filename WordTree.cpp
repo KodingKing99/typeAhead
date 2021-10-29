@@ -72,13 +72,13 @@ bool WordTree::find(std::string word)
     return findRecursive(word, root, 0);
 }
 
-bool WordTree::findRecursive(std::string word, std::shared_ptr<TreeNode> currNode, int i)
+bool WordTree::findRecursive(std::string word, std::shared_ptr<TreeNode> currNode, long unsigned int i)
 {
     if (i >= word.size() && currNode->endOfWord)
     {
         return true;
     }
-    if (i < 0 || i >= word.size())
+    if (i >= word.size())
     {
         return false;
     }
